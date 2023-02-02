@@ -64,6 +64,7 @@ module.exports = {
       'resumeBrown' : '#7a534a',
       'kitsuneOrange2' : '#f5b529',
       'kitsuneBlue2' : '#2f9edb',
+      'kitsuneBlue3' : '#2a8fc5',
     }, 
     screens: {
       'tablet': '640px', 
