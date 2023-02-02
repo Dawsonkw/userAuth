@@ -10,7 +10,7 @@ function UserAuth() {
     const [inputClass, setInputClass] = useState('text-gray-400')
 
     const handleUsername = () => {
-        setUserName(event.currentTarget.value);
+        setUserName(event.target.value);
         if (event.target.value) {
             setInputClass('text-black');
         } else {
