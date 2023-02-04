@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RingLoader } from 'react-spinners';
-
+import { BiShow } from 'react-icons/bi'
 
 
 
@@ -9,7 +9,8 @@ function UserAuth() {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false); 
-    const [inputClass, setInputClass] = useState('text-gray-400')
+    const [inputClass, setInputClass] = useState('text-gray-400');
+    const [showPassword, setShowPassword] = useState(false);
 
     // Handler for React Hook Form
     const { register, handleSubmit, watch, formState: { errors }, clearErrors  } = useForm(); 
@@ -85,58 +86,70 @@ function UserAuth() {
                         <label className='font-medium rounded-lg p-5 block' htmlFor="password">
                             Password
                         </label>
-                            <input {...register("password", {
-                                maxLength:20,
-                                minLength: 4,
-                                pattern: /^[A-Za-z0-9_@./#&+-]+$/i
+                            <div className='flex-row w-full relative'>
+                                <input {...register("password", {
+                                    maxLength:20,
+                                    minLength: 4,
+                                    pattern: /^[A-Za-z0-9_@./#&+-]+$/i
                                 
-                            })} 
-                                required
-                                className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `}  type="password" 
-                                value={password || ''} 
-                                placeholder='Enter your password' 
-                                onChange={handlePassword} 
-                            />
-                        {errors.password && <ul>
-                            <li>Password must be greater than 4 characters</li>
-                            <li>Password must be less than 20 characters</li>
-                            <li>Password must contain only alphanumeric characters  (a-z, A-Z), numbers (0-9), and special characters ie; _@./#&+-</li>
-                            </ul>}
+                                })}
+                                    required
+                                    className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `} 
+                                    value={password || ''}
+                                    placeholder='Enter your password'
+                                    onChange={handlePassword}
+                                    type={showPassword ? 'text' : 'password'}
+                                />                          
+                                    
+                                        {errors.password && <ul>
+                                        <li>Password must be greater than 4 characters</li>
+                                        <li>Password must be less than 20 characters</li>
+                                        <li>Password must contain only alphanumeric characters  (a-z, A-Z), numbers (0-9), and special characters ie; _@./#&+-</li>
+                                        </ul>}
+                                    
+                                    <div>        
+                                        <div className='absolute right-3 top-3 cursor-pointer hover:text-kitsuneBlue2 text-xl'
+                                            onClick={() => setShowPassword(!showPassword)}>
+                                           <BiShow />
+                                        </div>
+                                    </div>
+                            </div>
                     </div>
+                    
                     
                     <div className='flex justify-center'>
                         <div className='inline-flex relative content-center'>
                             <button
                             // onClick is going to take in the loadIcon function which displays a loading animation as well as the errorRemover function which will remove any error that is created through the form validation
-                            onClick={() => {
-                                if (!loading) {
-                                loadIcon(true); 
-                                errorRemover();
-                                }
-                            }}
-                            className='bg-kitsuneBlue2 hover:bg-kitsuneBlue3 font-medium py-2 rounded-lg px-16' 
-                            type='submit'
-                            >
+                                onClick={() => {
+                                    if (!loading) {
+                                    loadIcon(true); 
+                                    errorRemover();
+                                    }
+                                }}
+                                className='bg-kitsuneBlue2 hover:bg-kitsuneBlue3 font-medium py-2 rounded-lg px-16' 
+                                type='submit'
+                                >
                                 Login
                             </button>
-                            <div className='pt-2'>
-                                {loading && (
-                                    <RingLoader
-                                        color={'#000000'}
-                                        loading={loading}
-                                        cssOverride={override}
-                                        size={25}
-                                        aria-label='Loading Spinner'
-                                        data-testid='loader'
-                                    /> // Ringloader animation is only going to display when the button is clicked and only as long as it takes to load the next page, next page emulation is being provided through the timeout function at top. 
-                                )}
-                            </div>
-                            <div className=''>
-                                <p className='text-right ml-5 hover:text-kitsuneOrange hover:cursor-pointer'>Forgot Password</p>
-                            </div>
+                        <div className='pt-2'>
+                            {loading && (
+                                <RingLoader
+                                    color={'#000000'}
+                                    loading={loading}
+                                    cssOverride={override}
+                                    size={25}
+                                    aria-label='Loading Spinner'
+                                    data-testid='loader'
+                                /> // Ringloader animation is only going to display when the button is clicked and only as long as it takes to load the next page, next page emulation is being provided through the timeout function at top. 
+                            )}
+                        </div>
+                        <div className=''>
+                            <p className='text-right ml-5 hover:text-kitsuneOrange hover:cursor-pointer'>Forgot Password</p>
                         </div>
                     </div>
-                </form>
+                </div>
+            </form>
         </div>
     );
 }
