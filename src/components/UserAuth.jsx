@@ -9,15 +9,23 @@ function UserAuth() {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false); 
-    //state is set to true for development purposes so I can see the animation by default. State would be updated to false if this component was to be deployed so that it only shows upon the load
     const [inputClass, setInputClass] = useState('text-gray-400')
 
-    // Constants for React Hook Form
-    const { register, handleSubmit, watch, formState: { errors } } = useForm(); 
-    const onSubmit = data => console.log(data);
+    // Handler for React Hook Form
+    const { register, handleSubmit, watch, formState: { errors }, clearErrors  } = useForm(); 
+    const onSubmit = () => {
+        setLoading(true);
+        // Creating a timeout function to emulate the loading of the component into the actual page. The timeout allows the animation to load and then stops it after 1 second has passed
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        
+        // After the form is submitted, the fields are cleared automatically. 
+        setUserName('');
+        setPassword('');
+    };
 
-
-    const handleUsername = () => {
+    const handleUsername = (event) => {
         setUserName(event.target.value);
         if (event.target.value) {
             setInputClass('text-black');
@@ -26,7 +34,7 @@ function UserAuth() {
         }
     };
 
-    const handlePassword = () => {
+    const handlePassword = (event) => {
         setPassword(event.target.value);
         if (event.target.value) {
             setInputClass('text-black');
@@ -46,12 +54,9 @@ function UserAuth() {
     };
 
     const loadIcon = () => setLoading(!loading)
-    const errorRemover = () => clearErrors('username')
+    const errorRemover = () => clearErrors('username', 'password')
 
-//() => setLoading(!loading)  THIS WAS THE ORIGINAL STATEMENT IN THE onCLICK portion
-
-// We're using this https://react-hook-form.com/get-started#Registerfields 
-
+// We're using this https://react-hook-form.com/get-started#Registerfields as the api to handle authentication features
 
     return (
         <div className='bg-kitsuneOrange rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20'>
@@ -65,14 +70,11 @@ function UserAuth() {
                                 maxLength: 20,
                                 minLength: 4,
                                 pattern: /^[A-Za-z0-9_@./#&+-]+$/i // Regex pattern catches alphanumeric characters as well as special characters. 
-                                 })}
-                                 
-                            
-                            className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `} type="text" id='username' value={userName || ''} 
-                            placeholder='Enter your username' 
-                            onChange={handleUsername}
-                              
-                        />
+                            })}   
+                                className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `} type="text" id='username' value={userName || ''} 
+                                placeholder='Enter your username' 
+                                onChange={handleUsername}             
+                            />
                         {errors.username && <ul>
                             <li>Username must be greater than 4 characters</li>
                             <li>Username must be less than 20 characters</li>
@@ -83,14 +85,23 @@ function UserAuth() {
                         <label className='font-medium rounded-lg p-5 block' htmlFor="password">
                             Password
                         </label>
-                            <input required {...register("password")} 
-                            className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `}  type="password" 
-                            name="" 
-                            id="" 
-                            value={password || ''} 
-                            placeholder='Enter your password' 
-                            onChange={handlePassword} 
-                        />
+                            <input {...register("password", {
+                                maxLength:20,
+                                minLength: 4,
+                                pattern: /^[A-Za-z0-9_@./#&+-]+$/i
+                                
+                            })} 
+                                required
+                                className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `}  type="password" 
+                                value={password || ''} 
+                                placeholder='Enter your password' 
+                                onChange={handlePassword} 
+                            />
+                        {errors.password && <ul>
+                            <li>Password must be greater than 4 characters</li>
+                            <li>Password must be less than 20 characters</li>
+                            <li>Password must contain only alphanumeric characters  (a-z, A-Z), numbers (0-9), and special characters ie; _@./#&+-</li>
+                            </ul>}
                     </div>
                     
                     <div className='flex justify-center'>
@@ -98,8 +109,10 @@ function UserAuth() {
                             <button
                             // onClick is going to take in the loadIcon function which displays a loading animation as well as the errorRemover function which will remove any error that is created through the form validation
                             onClick={() => {
-                                loadIcon(true); // We need to figure out how to conditionally render the loading icon so it appears on load and then disappears instead of appearing and disappearing on every button click
+                                if (!loading) {
+                                loadIcon(true); 
                                 errorRemover();
+                                }
                             }}
                             className='bg-kitsuneBlue2 hover:bg-kitsuneBlue3 font-medium py-2 rounded-lg px-16' 
                             type='submit'
@@ -115,7 +128,7 @@ function UserAuth() {
                                         size={25}
                                         aria-label='Loading Spinner'
                                         data-testid='loader'
-                                    />
+                                    /> // Ringloader animation is only going to display when the button is clicked and only as long as it takes to load the next page, next page emulation is being provided through the timeout function at top. 
                                 )}
                             </div>
                             <div className=''>
