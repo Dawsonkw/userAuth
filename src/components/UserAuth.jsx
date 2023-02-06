@@ -12,9 +12,10 @@ function UserAuth() {
     const [inputClass, setInputClass] = useState('text-gray-400');
     const [showPassword, setShowPassword] = useState(false);
 
+
     // Handler for React Hook Form
-    const { register, handleSubmit, watch, formState: { errors }, clearErrors  } = useForm(); 
-    const onSubmit = () => {
+    const { register, handleSubmit, formState: { errors }, clearErrors  } = useForm(); 
+    const onSubmit = (data) => {
         setLoading(true);
         // Creating a timeout function to emulate the loading of the component into the actual page. The timeout allows the animation to load and then stops it after 1 second has passed
         setTimeout(() => {
@@ -57,10 +58,12 @@ function UserAuth() {
     const loadIcon = () => setLoading(!loading)
     const errorRemover = () => clearErrors('username', 'password')
 
+    
+
 // We're using this https://react-hook-form.com/get-started#Registerfields as the api to handle authentication features
 
     return (
-        <div className='bg-kitsuneOrange rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20'>
+        <div className='bg-gray-300 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20'>
                 <form onSubmit={handleSubmit(onSubmit)} className='bg-gray-100 rounded-lg p-6' action="" autoComplete='off'>
                     <div className='mb-4'>
                         <label className='font-medium rounded-lg p-6 block' htmlFor="Username">
@@ -74,7 +77,8 @@ function UserAuth() {
                             })}   
                                 className={`mb-5 w-full border border-kitsuneBlue p-2 rounded-lg ${inputClass} `} type="text" id='username' value={userName || ''} 
                                 placeholder='Enter your username' 
-                                onChange={handleUsername}             
+                                onChange={handleUsername}
+                                       
                             />
                         {errors.username && <ul>
                             <li>Username must be greater than 4 characters</li>
@@ -114,9 +118,7 @@ function UserAuth() {
                                         </div>
                                     </div>
                             </div>
-                    </div>
-                    
-                    
+                    </div>                                        
                     <div className='flex justify-center'>
                         <div className='inline-flex relative content-center'>
                             <button
@@ -144,8 +146,17 @@ function UserAuth() {
                                 /> // Ringloader animation is only going to display when the button is clicked and only as long as it takes to load the next page, next page emulation is being provided through the timeout function at top. 
                             )}
                         </div>
-                        <div className=''>
-                            <p className='text-right ml-5 hover:text-kitsuneOrange hover:cursor-pointer'>Forgot Password</p>
+                        <div className='flex-col '>
+                            <div className=''>
+                                <p onClick={() => console.log('I  create a user account')} className='text-left ml-5 hover:text-kitsuneBlue2 hover:cursor-pointer' type='submit'>
+                                    Create Account
+                                </p>
+                            </div>
+                            <div className=''>
+                                <p onClick={() => console.log('I reset a password')} className='text-left ml-5 hover:text-kitsuneBlue2 hover:cursor-pointer'>
+                                    Forgot Password
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
