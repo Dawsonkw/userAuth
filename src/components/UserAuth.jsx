@@ -58,9 +58,6 @@ function UserAuth() {
     const loadIcon = () => setLoading(!loading)
     const errorRemover = () => clearErrors('username', 'password')
 
-    
-
-// We're using this https://react-hook-form.com/get-started#Registerfields as the api to handle authentication features
 
     return (
         <div className='bg-gray-300 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20'>
