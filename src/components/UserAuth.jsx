@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RingLoader } from 'react-spinners';
-import { BiShow } from 'react-icons/bi'
+import { BiShow } from 'react-icons/bi';
 
 
 
