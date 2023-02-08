@@ -60,7 +60,7 @@ function UserAuth() {
 
 
     return (
-        <div className='bg-gray-300 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20'>
+        <div className='bg-gray-300 rounded-lg p-6 shadow-lg mx-5 pt-5 pb-20 font-robotoSlab'>
                 <form onSubmit={handleSubmit(onSubmit)} className='bg-gray-100 rounded-lg p-6' action="" autoComplete='off'>
                     <div className='mb-4'>
                         <label className='font-medium rounded-lg p-6 block' htmlFor="Username">
